@@ -1,6 +1,6 @@
 # Privacy policy: GST, EMI & SIP Calculator
 
-Live page: https://calc.shaikhismail.com/privacy.html
+Live page: https://tools.shaikhismail.com/gst-emi-calculator/privacy.html
 
 ## The short version
 
