@@ -5,7 +5,8 @@ Quick GST, EMI and SIP calculations with clear breakdowns: add or remove GST wit
 **Live:** https://calc.shaikhismail.com · part of the [free tools](https://shaikhismail.com/tools/) by [Mohammed Ismail Shaikh](https://shaikhismail.com)
 
 - 100% client-side: files and numbers never leave your browser
-- No build step, no server, no tracking, no cost to host
+- Nothing is uploaded, saved or tracked; no cookies, analytics or third-party scripts
+- No build step, no server, no cost to host
 - Works on phones, light and dark theme
 
 ## Run locally
@@ -24,7 +25,11 @@ Then visit http://localhost:8080.
 ```
 public/                 Everything that gets published
 ├── index.html          The page
+├── privacy.html        Privacy policy
+├── .htaccess           HTTPS, security headers, bot blocking
+├── robots.txt, sitemap.xml, .well-known/security.txt
 └── assets/
+    ├── fonts/          JetBrains Mono, self-hosted (OFL)
     ├── css/tool.css    Shared look (same tokens as shaikhismail.com)
     ├── js/common.js    Theme toggle, drop zone, download helpers
     ├── js/calc.js      GST, EMI and SIP maths (tested)
@@ -42,6 +47,12 @@ The maths lives in `public/assets/js/calc.js`. Its tests need only Node 18 or ne
 ```
 node --test
 ```
+
+## Privacy and security
+
+Nothing is uploaded, saved or tracked: see [PRIVACY.md](PRIVACY.md) (also published as `privacy.html`) and [SECURITY.md](SECURITY.md).
+
+`public/.htaccess` adds the security headers, forces HTTPS and blocks spam bots and scanners. Optional, also free: put the domain behind [Cloudflare](https://www.cloudflare.com/plans/free/) (change the nameservers at your registrar, keep "Proxied" on for each subdomain, turn on *Bot Fight Mode* and *Always Use HTTPS*). That hides the hosting server and absorbs bot floods before they reach MilesWeb.
 
 ## Deploy on MilesWeb (cPanel)
 

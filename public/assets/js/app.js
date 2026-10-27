@@ -7,16 +7,15 @@
   const num = el => Math.max(0, parseFloat(el.value) || 0);
   const tile = (k, v, hl) => `<div class="stat${hl ? ' hl' : ''}"><div class="k">${k}</div><div class="v">${v}</div></div>`;
 
-  /* ---------- tabs (remembered per visitor) ---------- */
+  /* ---------- tabs (nothing is stored; #emi or #sip in the link opens that tab) ---------- */
   function showTab(name) {
     document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name));
     document.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== name; });
-    try { localStorage.setItem('calc-tab', name); } catch (e) {}
+    history.replaceState(null, '', '#' + name);
   }
   document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
   const fromHash = location.hash.slice(1);
-  let saved = null; try { saved = localStorage.getItem('calc-tab'); } catch (e) {}
-  showTab(['gst', 'emi', 'sip'].includes(fromHash) ? fromHash : saved || 'gst');
+  showTab(['gst', 'emi', 'sip'].includes(fromHash) ? fromHash : 'gst');
 
   function segment(attr, onChange) {
     const btns = document.querySelectorAll(`[${attr}]`);
