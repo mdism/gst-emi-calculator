@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GST, EMI &amp; SIP Calculator — Ismail Shaikh</title>
+<meta name="description" content="Free GST, EMI and SIP calculator with clear breakdowns. Add or remove GST, plan a loan, or see what a monthly SIP can grow to.">
+<link rel="canonical" href="https://calc.shaikhismail.com/">
+<meta property="og:title" content="GST, EMI &amp; SIP Calculator">
+<meta property="og:description" content="Quick GST, EMI and SIP calculations with clear breakdowns.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23155E3B'/><text x='50' y='68' font-size='58' text-anchor='middle' fill='%23F5821F' font-family='monospace' font-weight='bold'>i</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tool.css?v=1.0.0">
+<style>
+  .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--bg-alt); margin-top: 8px; }
+  .bar span { display: block; height: 100%; }
+  .bar .a { background: var(--green); } .bar .b { background: var(--orange); }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-soft); margin-top: 6px; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://shaikhismail.com/"><span class="logo">i</span>GST, EMI &amp; SIP <small>by Ismail</small></a>
+    <nav>
+      <a class="hide-sm" href="https://shaikhismail.com/tools/">All tools</a>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap stack">
+    <div>
+      <div class="prompt" aria-hidden="true"><span class="u">guest</span>@<span class="d">calc</span>:~$ emi --amount 500000</div>
+      <h1>GST, EMI &amp; SIP Calculator</h1>
+      <p class="lead">Add or remove GST from a price, see what a loan really costs each month, or estimate what a monthly SIP can grow to. Results update as you type.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="gst" type="button">GST</button>
+      <button role="tab" aria-selected="false" data-tab="emi" type="button">EMI</button>
+      <button role="tab" aria-selected="false" data-tab="sip" type="button">SIP</button>
+    </div>
+
+    <!-- GST -->
+    <section class="card stack" data-pane="gst" role="tabpanel">
+      <div class="row">
+        <div><label class="f" for="gAmt">Amount (₹)</label><input id="gAmt" type="number" min="0" value="1000" inputmode="decimal"></div>
+        <div>
+          <label class="f" for="gRate">GST rate (%)</label>
+          <select id="gRate">
+            <option>0</option><option>0.25</option><option>3</option><option>5</option><option>12</option>
+            <option selected>18</option><option>28</option><option>40</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <span class="f">This amount is</span>
+          <div class="seg" role="group" aria-label="Amount type">
+            <button type="button" data-gmode="add" aria-pressed="true">Before GST (add GST)</button>
+            <button type="button" data-gmode="remove" aria-pressed="false">Including GST (remove GST)</button>
+          </div>
+        </div>
+        <div>
+          <span class="f">Supply</span>
+          <div class="seg" role="group" aria-label="Supply type">
+            <button type="button" data-gsup="intra" aria-pressed="true">Within state</button>
+            <button type="button" data-gsup="inter" aria-pressed="false">Other state</button>
+          </div>
+        </div>
+      </div>
+      <div class="stats" id="gOut"></div>
+      <p class="muted" style="font-size:12px;margin:0">Within a state GST is split equally into CGST and SGST. Between states it is charged as IGST. Rates change from time to time, so check the current rate for your item.</p>
+    </section>
+
+    <!-- EMI -->
+    <section class="card stack" data-pane="emi" role="tabpanel" hidden>
+      <div class="row">
+        <div><label class="f" for="eAmt">Loan amount (₹)</label><input id="eAmt" type="number" min="0" value="500000" inputmode="decimal"></div>
+        <div><label class="f" for="eRate">Interest rate (% a year)</label><input id="eRate" type="number" min="0" step="0.05" value="9.5" inputmode="decimal"></div>
+        <div><label class="f" for="eYrs">Tenure (years)</label><input id="eYrs" type="number" min="0.5" step="0.5" value="5" inputmode="decimal"></div>
+      </div>
+      <div class="stats" id="eOut"></div>
+      <div>
+        <div class="bar" id="eBar"><span class="a"></span><span class="b"></span></div>
+        <div class="legend"><span><i style="background:var(--green)"></i>Principal</span><span><i style="background:var(--orange)"></i>Interest</span></div>
+      </div>
+      <details>
+        <summary style="cursor:pointer">Year-by-year schedule</summary>
+        <div class="table-wrap" style="margin-top:10px"><table id="eTable"></table></div>
+      </details>
+    </section>
+
+    <!-- SIP -->
+    <section class="card stack" data-pane="sip" role="tabpanel" hidden>
+      <div class="row">
+        <div><label class="f" for="sAmt">Monthly SIP (₹)</label><input id="sAmt" type="number" min="0" value="5000" inputmode="decimal"></div>
+        <div><label class="f" for="sRate">Expected return (% a year)</label><input id="sRate" type="number" min="0" step="0.5" value="12" inputmode="decimal"></div>
+        <div><label class="f" for="sYrs">Years</label><input id="sYrs" type="number" min="1" value="10" inputmode="numeric"></div>
+        <div><label class="f" for="sStep">Yearly step-up (%)</label><input id="sStep" type="number" min="0" value="0" inputmode="decimal"></div>
+      </div>
+      <div class="stats" id="sOut"></div>
+      <div>
+        <div class="bar" id="sBar"><span class="a"></span><span class="b"></span></div>
+        <div class="legend"><span><i style="background:var(--green)"></i>You invest</span><span><i style="background:var(--orange)"></i>Estimated gains</span></div>
+      </div>
+      <details>
+        <summary style="cursor:pointer">Year-by-year growth</summary>
+        <div class="table-wrap" style="margin-top:10px"><table id="sTable"></table></div>
+      </details>
+      <p class="muted" style="font-size:12px;margin:0">An estimate only. Market returns are not guaranteed, and this does not include tax or fund charges.</p>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>&copy; <span id="yr">2026</span> <a href="https://shaikhismail.com/">Mohammed Ismail Shaikh</a> · free and open source</span>
+    <span><a href="https://shaikhismail.com/tools/">More free tools</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/common.js?v=1.0.0"></script>
+<script src="assets/js/calc.js?v=1.0.0"></script>
+<script src="assets/js/app.js?v=1.0.0"></script>
+</body>
+</html>
